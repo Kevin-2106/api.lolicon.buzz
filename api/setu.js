@@ -1,9 +1,8 @@
-// 在 /api/redirect.js 文件中
-import { get } from 'axios';
+import axios from 'axios';
 
 export default async (req, res) => {
   try {
-    const response = await get('https://api.lolicon.app/setu/v2');
+    const response = await axios.get('https://api.lolicon.app/setu/v2');
     const redirectUrl = response.data.data.urls.original;
     
     res.setHeader('Location', redirectUrl);
