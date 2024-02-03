@@ -1,12 +1,23 @@
 import axios from 'axios';
+import { URLSearchParams } from 'url';
 
 export default async (req, res) => {
   try {
-    const response = await axios.get('https://api.lolicon.app/setu/v2', { params: req.query });
-    const redirectUrl = response.data.data.urls.original;
+    // Convert req.query object to URLSearchParams
+    const params = new URLSearchParams(req.query);
+
+    const response = await axios.get('https://api.lolicon.app/setu/v2', { params });
     
-    res.setHeader('Location', redirectUrl);
-    res.status(307).end();
+    // Check if the data array is not empty
+    if (response.data.data.length > 0) {
+      const redirectUrl = response.data.data[0].urls.original;
+      
+      res.setHeader('Location', redirectUrl);
+      res.status(307).end();
+    } else {
+      res.status(404).send({ error: 'No data found in the response' });
+    }
+    
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
