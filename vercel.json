@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+      {
+        "source": "/setu/v2",
+        "destination": "/api/setu"
+      }
+    ]
+  }

@@ -1,0 +1,36 @@
+// 引入 Node.js 的 https 模块
+const https = require('https');
+
+module.exports = (req, res) => {
+    // 设置请求选项
+    const options = {
+        hostname: 'api.lolicon.app',
+        port: 443,
+        path: '/setu/v2',
+        method: 'GET'
+    };
+
+    // 发起请求
+    const request = https.request(options, response => {
+        let data = '';
+
+        // 当收到一部分数据时，将其添加到 data 变量中
+        response.on('data', chunk => {
+            data += chunk;
+        });
+
+        // 当所有数据接收完毕，将其解析并发送回原始请求
+        response.on('end', () => {
+            const parsedData = JSON.parse(data);
+            res.status(200).send(parsedData.data.urls.original);
+        });
+    });
+
+    // 如果请求出错，返回错误信息
+    request.on('error', error => {
+        res.status(500).send(`Error: ${error.message}`);
+    });
+
+    // 结束请求
+    request.end();
+};
