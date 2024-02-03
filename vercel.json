@@ -1,4 +1,5 @@
 {
+    "installCommand": "yarn install",
     "rewrites": [
       {
         "source": "/setu/v2",
